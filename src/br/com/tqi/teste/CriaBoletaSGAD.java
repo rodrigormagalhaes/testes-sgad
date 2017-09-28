@@ -44,8 +44,7 @@ public class CriaBoletaSGAD {
 			//seta a url
 			driver.navigate().to(line);
 			
-			//Pega a próxima linha >> texto a ser buscado
-			line = ioManager.getLineInput();
+			
 			
 			//Cria a Página de login
 			LoginPageObjetct login = new LoginPageObjetct(driver);
@@ -57,6 +56,17 @@ public class CriaBoletaSGAD {
 			
 			//simula o enter
 			login.txtUser.sendKeys(Keys.ENTER);
+			
+			//Pega a próxima linha >> CNPJ
+			line = ioManager.getLineInput();
+			
+			preencheAba1(line);
+			
+			preencheAba2();
+			
+			preencheAba3();
+			
+			
 
 		} catch (Exception e) {
 			
@@ -64,10 +74,29 @@ public class CriaBoletaSGAD {
 
 		} finally {
 
-			// fecha conexões
+			//fecha arquivo
 			ioManager.close();
 			
 		}	
+	}
+	
+	public static void preencheAba1 (String line) throws IOException {
+		
+
+		
+		//Pega a próxima linha >> CNPF
+		line = ioManager.getLineInput();
+		
+	}
+	
+	
+	public static void preencheAba2(){
+
+	}
+
+
+	public static void preencheAba3(){
+
 	}
 
 
