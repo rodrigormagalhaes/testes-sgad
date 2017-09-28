@@ -13,10 +13,9 @@ public class HomePageObject {
 	}
 	
 	
-	@FindBy(name="q")
-	public WebElement txtSearch;
+	//Menu Boletas
+	@FindBy(css="#MainMenu > div > a.list-group-item.js-sidebar-toggle.ng-scope > i")
+	public WebElement menuBoletas;
 
-	@FindBy(name="btnK")
-	public WebElement btnSearch;
 
 }

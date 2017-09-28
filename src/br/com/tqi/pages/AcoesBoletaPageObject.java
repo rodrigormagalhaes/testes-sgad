@@ -5,18 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class BoletaPageObject {
+public class AcoesBoletaPageObject {
 	
-	public BoletaPageObject(WebDriver driver) {
+	public AcoesBoletaPageObject(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		
 	}
 	
-	
-	@FindBy(name="q")
-	public WebElement txtSearch;
+	//Botão Nova Boleta
+	@FindBy(css="#menu-fix > div > button.btn-lg.btn-success.ng-scope")
+	public WebElement btnNovaBoleta;
 
-	@FindBy(name="btnK")
-	public WebElement btnSearch;
 
 }

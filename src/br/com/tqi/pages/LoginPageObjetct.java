@@ -12,10 +12,10 @@ public class LoginPageObjetct {
 		
 	}
 	
-	@FindBy(name="q")
-	public WebElement txtSearch;
-
-	@FindBy(name="btnK")
-	public WebElement btnSearch;
+	@FindBy(id="userName")
+	public WebElement txtUserName;
+	
+	@FindBy(id="senha")
+	public WebElement txtSenha;
 
 }
