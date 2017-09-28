@@ -5,14 +5,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class CriaDetalhamentoBoletaPageObjects {
+public class CriaDetalhamentoBoletaPageObject {
 	
-	public CriaDetalhamentoBoletaPageObjects(WebDriver driver) {
+	public CriaDetalhamentoBoletaPageObject(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		
 	}
 	
 
+	@FindBy(css="body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding > text")
+	public WebElement msgCarregando;	
+	
 	@FindBy(name="dsRazaoSocial")
 	public WebElement inputRazaoSocial;
 	
@@ -41,10 +44,10 @@ public class CriaDetalhamentoBoletaPageObjects {
 	public WebElement inputEmailSenha;
 	
 	@FindBy(name="nrTelefoneSenha")
-	public WebElement inputTelSenha;
+	public WebElement inputCelSenha;
 	
 	@FindBy(name="nrTipoEndereco")
-	public WebElement selectNrTipoEndereco;
+	public WebElement selectTipoEndereco;
 	
 	@FindBy(name="cdCep")
 	public WebElement inputCEP;
@@ -82,10 +85,44 @@ public class CriaDetalhamentoBoletaPageObjects {
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(2) > a > uib-tab-heading > span")
 	public WebElement abaCondicoesComerciais;
 	
+	//----------------------------------------------------------/Aba Condições Comerciais/---------------------------------------------//
+	
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > div:nth-child(3) > div.panel-body > div.row.ng-scope > div > div > select")
+	public WebElement selectProduto;
+	
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div > div > div.panel-body > div:nth-child(2) > div.col-md-2 > button")
+	public WebElement btnAddProduto;
+	
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(3) > a > uib-tab-heading > span")
+	public WebElement abaEquipamentos;
 	
 	
+	//----------------------------------------------------------/Aba Equipamentoss-------/---------------------------------------------//
 
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(1) > div:nth-child(1) > div > select")
+	public WebElement selectMeioConexao;
+	
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(1) > div.col-md-3 > div > select")
+	public WebElement selectTipoLinha;
+	
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div:nth-child(1) > div > select")
+	public WebElement selectModelo;
+	
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div:nth-child(2) > div > input")
+	public WebElement inputQtd;
+	
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div.col-md-1.col-md-offset-7 > div > div > button")
+	public WebElement btnAddEquipamento;
+	
+	@FindBy(css="#accordiongroup-1694-4334-panel > div > div:nth-child(4) > div > div > button.btn.btn-success.btn-grid-fix")
+	public WebElement btnSalvarEquipamento;
+	
+	@FindBy(css="#containerMain > div > div > div > section > div > div > div.conteudo.conteudo-fix-boleta > nav > ul > li:nth-child(4) > ul > li > ul > li:nth-child(3) > a > i")
+	public WebElement btnEnviarBoleta;
+	
 }
+
+
 
 
 
