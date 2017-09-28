@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import br.com.tqi.pages.BoletaPageObject;
+import br.com.tqi.pages.HomePageObject;
 import br.com.tqi.pages.LoginPageObjetct;
 import br.com.tqi.utils.IOManager;
 
@@ -60,11 +62,20 @@ public class CriaBoletaSGAD {
 			//Pega a próxima linha >> CNPJ
 			line = ioManager.getLineInput();
 			
-			preencheAba1(line);
 			
-			preencheAba2();
+			HomePageObject home = new HomePageObject(driver);
 			
-			preencheAba3();
+			home.clickBoleta();
+			
+			
+			BoletaPageObject boleta = new BoletaPageObject(driver);
+			
+			
+			preencheAba1(boleta, line);
+			
+			preencheAba2(boleta);
+			
+			preencheAba3(boleta);
 			
 			
 
@@ -80,7 +91,7 @@ public class CriaBoletaSGAD {
 		}	
 	}
 	
-	public static void preencheAba1 (String line) throws IOException {
+	public static void preencheAba1 (BoletaPageObject boleta, String line) throws IOException {
 		
 
 		
@@ -90,12 +101,12 @@ public class CriaBoletaSGAD {
 	}
 	
 	
-	public static void preencheAba2(){
+	public static void preencheAba2(BoletaPageObject boleta){
 
 	}
 
 
-	public static void preencheAba3(){
+	public static void preencheAba3(BoletaPageObject boleta){
 
 	}
 
