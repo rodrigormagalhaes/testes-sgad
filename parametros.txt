@@ -1,4 +1,4 @@
-http://trbnetdsv.tribanco.com.br/TricardNET.SGAD.WebUI.v2/Login
+http://localhost:17237/TricardNET.SGAD.WebUI.v2/
 ccreis
 
 35472578000125

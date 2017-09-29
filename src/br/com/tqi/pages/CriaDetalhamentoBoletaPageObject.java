@@ -52,6 +52,9 @@ public class CriaDetalhamentoBoletaPageObject {
 	@FindBy(name="cdCep")
 	public WebElement inputCEP;
 	
+	@FindBy(name="dsBairro")
+	public WebElement inputBairro;
+	
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div:nth-child(3) > div.panel-body > ng-form > div > div > div:nth-child(2) > div.col-md-3 > div > button.btn.table-btn.btn-success.btn-grid-fix")
 	public WebElement btnAdicionarEnd;
 	
@@ -78,11 +81,14 @@ public class CriaDetalhamentoBoletaPageObject {
 
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div.ng-scope > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div.panel-body > div:nth-child(1) > div.col-md-6.ng-scope > div > input")
 	public WebElement chkContaDigital;
-
+	             
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div.ng-scope > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div.panel-body > div:nth-child(1) > div:nth-child(1) > div > input")
 	public WebElement chkContaAbertura;
 	
-	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(2) > a > uib-tab-heading > span")
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div.ng-scope > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div.panel-body > div:nth-child(1) > div:nth-child(1) > div > label")
+	public WebElement label;
+	
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(2)")
 	public WebElement abaCondicoesComerciais;
 	
 	//----------------------------------------------------------/Aba Condições Comerciais/---------------------------------------------//

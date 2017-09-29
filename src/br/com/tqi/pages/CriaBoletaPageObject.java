@@ -13,8 +13,8 @@ public class CriaBoletaPageObject {
 	}
 	
 	@FindBy(name="cdCnpj")
-	public WebElement inptCNPJ;
-	
+	public WebElement inputCNPJ;
+	             
 	@FindBy(css="#conteudo-fix-pesquisa > ng-form > div.panel.panel-default > div > div:nth-child(3) > div > div > button")
 	public WebElement btnPesquisar;
 
