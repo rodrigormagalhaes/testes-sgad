@@ -1,8 +1,6 @@
 package br.com.tqi.teste;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
@@ -14,7 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -79,7 +76,7 @@ public class TesteCriaBoletaSGAD {
 			//Pega a próxima linha >> senha
 			line = ioManager.getLineInput();
 
-			login.txtSenha.sendKeys(line);
+			login.txtSenha.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
 			
 			//simula o enter
 			login.txtSenha.sendKeys(Keys.ENTER);
@@ -111,7 +108,7 @@ public class TesteCriaBoletaSGAD {
 			
 			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.inputCNPJ));
 		
-			criaBoleta.inputCNPJ.sendKeys(line);
+			criaBoleta.inputCNPJ.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
 			
 			checkPageIsReady();
 			
@@ -129,7 +126,7 @@ public class TesteCriaBoletaSGAD {
 			
 			checkPageIsReady();
 			
-			preencheAbaDadosEstabelecimento(criaDetalhamento, line);
+			preencheAbaDadosEstabelecimento(criaDetalhamento, line.substring(Math.addExact(line.indexOf("="), 1)));
 			
 			preencheAbaCondicoesComerciais(criaDetalhamento);
 			
@@ -207,7 +204,7 @@ public class TesteCriaBoletaSGAD {
 		criaDetalhamento.inputNome.sendKeys("Rodrigo Ribeiro");
 		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
-		criaDetalhamento.inputCPF.sendKeys(line);
+		criaDetalhamento.inputCPF.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
 		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
 		criaDetalhamento.inputPart.sendKeys("100");
