@@ -12,7 +12,10 @@ public class CriaDetalhamentoBoletaPageObject {
 		
 	}
 	
-
+	
+	@FindBy(css="#containerMain > div > div > div > section > div > div")
+	public WebElement topo;
+	
 	@FindBy(css="body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding > text")
 	public WebElement msgCarregando;	
 	

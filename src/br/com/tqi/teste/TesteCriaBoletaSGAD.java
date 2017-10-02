@@ -6,12 +6,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,12 +17,13 @@ import br.com.tqi.pages.CriaBoletaPageObject;
 import br.com.tqi.pages.CriaDetalhamentoBoletaPageObject;
 import br.com.tqi.pages.HomePageObject;
 import br.com.tqi.pages.LoginPageObjetct;
-import br.com.tqi.utils.IOManager;
+import br.com.tqi.utils.FileUtils;
 
 
 public class TesteCriaBoletaSGAD {
 	
-	static IOManager ioManager;
+	static FileUtils file;
+	
 	static WebDriver driver; 
 	
 	static WebDriverWait wait;
@@ -35,16 +33,8 @@ public class TesteCriaBoletaSGAD {
 	public static void main(String[] args) throws IOException {
 		
 		try {
-			
-						
-			//Recebe o arquivo parametros.txt que é setado em Run Configurations >> Arguments
-			String fileInput = args[0];
-					
-			//Cria o controlador do arquivo
-			ioManager = new IOManager(fileInput);
-			
-			//Pega a primeira linha >> url
-			String line = ioManager.getLineInput();
+								
+			file = new FileUtils(args[0]); 			
 			
 			//Executar com Firefox
 			//System.setProperty("webdriver.firefox.bin", "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
@@ -57,32 +47,20 @@ public class TesteCriaBoletaSGAD {
 			System.setProperty("webdriver.chrome.driver", ".\\driver\\chromedriver.exe");
 					
 			driver = new ChromeDriver(options);
-			
-			//seta a url
-			driver.navigate().to(line);
-			
-			//Pega a próxima linha >> usuário
-			line = ioManager.getLineInput();
+
+			driver.navigate().to(file.getValue("url"));
 	
 			//Cria a Página de login
 			LoginPageObjetct login = new LoginPageObjetct(driver);
 			
-			//Thread.sleep(3000);
-			
 			checkPageIsReady();
 			
-			login.txtUserName.sendKeys(line);
+			login.txtUserName.sendKeys(file.getValue("user"));
 			
-			//Pega a próxima linha >> senha
-			line = ioManager.getLineInput();
-
-			login.txtSenha.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
+			login.txtSenha.sendKeys(file.getValue("pwd"));
 			
 			//simula o enter
 			login.txtSenha.sendKeys(Keys.ENTER);
-			
-			//Pega a próxima linha >> CNPJ
-			line = ioManager.getLineInput();
 		
 			HomePageObject home = new HomePageObject(driver);
 			
@@ -108,7 +86,7 @@ public class TesteCriaBoletaSGAD {
 			
 			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.inputCNPJ));
 		
-			criaBoleta.inputCNPJ.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
+			criaBoleta.inputCNPJ.sendKeys(file.getValue("cnpj"));
 			
 			checkPageIsReady();
 			
@@ -126,7 +104,7 @@ public class TesteCriaBoletaSGAD {
 			
 			checkPageIsReady();
 			
-			preencheAbaDadosEstabelecimento(criaDetalhamento, line.substring(Math.addExact(line.indexOf("="), 1)));
+			preencheAbaDadosEstabelecimento(criaDetalhamento, file);
 			
 			preencheAbaCondicoesComerciais(criaDetalhamento);
 			
@@ -139,19 +117,11 @@ public class TesteCriaBoletaSGAD {
 			
 			e.printStackTrace();
 
-		} finally {
-
-			//fecha arquivo
-			ioManager.close();
-			
-		}	
+		} 
 	}
 	
-	public static void preencheAbaDadosEstabelecimento(CriaDetalhamentoBoletaPageObject criaDetalhamento, String line) throws IOException, InterruptedException, AWTException {
-				
-		//Pega a próxima linha >> CPF
-		line = ioManager.getLineInput();
-		
+	public static void preencheAbaDadosEstabelecimento(CriaDetalhamentoBoletaPageObject criaDetalhamento, FileUtils file) throws IOException, InterruptedException, AWTException {
+
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputRazaoSocial));		
 		criaDetalhamento.inputRazaoSocial.sendKeys("Teste Automação - Rodrigo");	
 		
@@ -192,9 +162,6 @@ public class TesteCriaBoletaSGAD {
 		
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
 		
-		//wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputBairro));		
-		//criaDetalhamento.inputBairro.click();
-		
 		checkPageIsReady();
 		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarEnd));			
@@ -204,7 +171,7 @@ public class TesteCriaBoletaSGAD {
 		criaDetalhamento.inputNome.sendKeys("Rodrigo Ribeiro");
 		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
-		criaDetalhamento.inputCPF.sendKeys(line.substring(Math.addExact(line.indexOf("="), 1)));
+		criaDetalhamento.inputCPF.sendKeys(file.getValue("cpf"));
 		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
 		criaDetalhamento.inputPart.sendKeys("100");
@@ -222,15 +189,13 @@ public class TesteCriaBoletaSGAD {
 		criaDetalhamento.inputQtdChkLoja.sendKeys("3");
 
 		checkPageIsReady();
-		
-		//wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.chkContaDigital));
+
 		criaDetalhamento.chkContaDigital.click();
 
 		checkPageIsReady();
 		
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
-		
-		//wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.chkContaAbertura));
+
 		criaDetalhamento.label.click();
 		criaDetalhamento.chkContaAbertura.click();
 		
@@ -242,12 +207,12 @@ public class TesteCriaBoletaSGAD {
 
 //		JavascriptExecutor js = ((JavascriptExecutor) driver);
 //		js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-		
-
+		 
+//
 //		JavascriptExecutor js = (JavascriptExecutor) driver;
 //		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-		
-//		((JavascriptExecutor) driver).executeScript("scroll(0,400)");
+//		
+//		((JavascriptExecutor) driver).executeScript("scroll(0,0)");
 //		
 
 		
@@ -262,18 +227,25 @@ public class TesteCriaBoletaSGAD {
 //
 //	    e.sendKeys(Keys.CONTROL + "\t");//to move focus to next tab in same browser
 
-		WebElement eSupplierSuggest = driver.findElement(By.xpath("//*[@id=\"conteudo-gerenciar-boleta\"]/div[1]/ul/li[2]/a/uib-tab-heading"));
-		Point location = eSupplierSuggest.getLocation();
-		new Actions(driver).moveToElement(eSupplierSuggest, location.x, location.y).click();
+//		WebElement eSupplierSuggest = driver.findElement(By.xpath("//*[@id=\"conteudo-gerenciar-boleta\"]/div[1]/ul/li[2]/a/uib-tab-heading"));
+//		Point location = eSupplierSuggest.getLocation();
+//		new Actions(driver).moveToElement(eSupplierSuggest, location.x, location.y).click();
+//		
+//		new Actions(driver).moveToElement(eSupplierSuggest).click().perform();
+//		
+//		JavascriptExecutor js = ((JavascriptExecutor) driver);
+//		
+//		//js.executeScript(arg0, arg1)
 		
-		new Actions(driver).moveToElement(eSupplierSuggest).click().perform();
+//		criaDetalhamento.topo.sendKeys(Keys.HOME);
 		
-		JavascriptExecutor js = ((JavascriptExecutor) driver);
+//		Actions builder = new Actions(driver);   
+//		builder.moveToElement(criaDetalhamento.topo, -100, -200).click().build().perform();
 		
-		//js.executeScript(arg0, arg1)
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.abaCondicoesComerciais));
-		criaDetalhamento.abaCondicoesComerciais.click();	
+//		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.abaCondicoesComerciais));
+//		criaDetalhamento.abaCondicoesComerciais.click();	
+											   
+		driver.navigate().to(file.getValue("urlAbaCondicoesComerciais"));
 		
 		checkPageIsReady();
 		

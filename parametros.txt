@@ -1,5 +1,0 @@
-url=http://localhost:17237/TricardNET.SGAD.WebUI.v2/
-usuario=ccreis
-senha=
-cnpj=35472578000125
-cpf=83440924009
