@@ -108,26 +108,30 @@ public class CriaDetalhamentoBoletaPageObject {
 	
 	//----------------------------------------------------------/Aba Equipamentoss-------/---------------------------------------------//
 
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(1) > div:nth-child(1) > div > select")
+	@FindBy(css="div > ng-form > div:nth-child(1) > div:nth-child(1) > div > select")             
 	public WebElement selectMeioConexao;
 	
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(1) > div.col-md-3 > div > select")
+	@FindBy(css="div > ng-form > div:nth-child(1) > div.col-md-3 > div > select")
 	public WebElement selectTipoLinha;
 	
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div:nth-child(1) > div > select")
+	@FindBy(css="div > ng-form > div:nth-child(2) > div:nth-child(1) > div > select")
 	public WebElement selectModelo;
 	
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div:nth-child(2) > div > input")
+	@FindBy(css="div > ng-form > div:nth-child(2) > div:nth-child(2) > div > input")
 	public WebElement inputQtd;
 	
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > ng-form > div:nth-child(2) > div.col-md-1.col-md-offset-7 > div > div > button")
+	@FindBy(css="div > ng-form > div:nth-child(2) > div.col-md-1.col-md-offset-7 > div > div > button")
 	public WebElement btnAddEquipamento;
 	
-	@FindBy(css="#accordiongroup-1694-4334-panel > div > div:nth-child(4) > div > div > button.btn.btn-success.btn-grid-fix")
+	@FindBy(css="div > div:nth-child(4) > div > div > button.btn.btn-success.btn-grid-fix")
 	public WebElement btnSalvarEquipamento;
 	
+	@FindBy(css="#containerMain > div > div > div > section > div > div > div.conteudo.conteudo-fix-boleta > nav > ul > li:nth-child(4) > ul > li > a > i.mfb-component__main-icon--active.fa.fa-arrow-circle-up.fa-lg")
+	public WebElement btnAcoesBoleta;
+		
 	@FindBy(css="#containerMain > div > div > div > section > div > div > div.conteudo.conteudo-fix-boleta > nav > ul > li:nth-child(4) > ul > li > ul > li:nth-child(3) > a > i")
 	public WebElement btnEnviarBoleta;
+	
 	
 }
 

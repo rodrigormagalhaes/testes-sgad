@@ -111,7 +111,10 @@ public class TesteCriaBoletaSGAD {
 			
 			preencheAbaEquipamentos(criaDetalhamento);
 			
-			criaDetalhamento.btnEnviarBoleta.click();			
+			Actions actionAcoesBoleta = new Actions(driver);
+			actionAcoesBoleta.moveToElement(criaDetalhamento.btnAcoesBoleta).build().perform();
+						
+			criaDetalhamento.btnEnviarBoleta.click();
 			
 
 		} catch (Exception e) {
@@ -291,6 +294,7 @@ public class TesteCriaBoletaSGAD {
 			// To check page ready state.
 			if (js.executeScript("return document.readyState").toString().equals("complete")) {
 				Thread.sleep(2000);
+				System.out.println("Carregando Página");
 				break;
 			}
 		}
