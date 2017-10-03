@@ -98,11 +98,11 @@ public class CriaDetalhamentoBoletaPageObject {
 	
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > div:nth-child(3) > div.panel-body > div.row.ng-scope > div > div > select")
 	public WebElement selectProduto;
-	
+	             
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div > div > div.panel-body > div:nth-child(2) > div.col-md-2 > button")
 	public WebElement btnAddProduto;
 	
-	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(3) > a > uib-tab-heading > span")
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(3) > a")
 	public WebElement abaEquipamentos;
 	
 	

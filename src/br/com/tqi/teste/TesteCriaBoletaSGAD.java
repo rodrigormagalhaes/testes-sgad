@@ -9,7 +9,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.internal.Locatable;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.com.tqi.pages.AcoesBoletaPageObject;
@@ -28,8 +31,6 @@ public class TesteCriaBoletaSGAD {
 	
 	static WebDriverWait wait;
 	
-	//static WebDriverWait wait = new WebDriverWait(driver, 50);
-
 	public static void main(String[] args) throws IOException {
 		
 		try {
@@ -204,72 +205,65 @@ public class TesteCriaBoletaSGAD {
 		checkPageIsReady();
 		
 		Thread.sleep(3000);
-
-//		JavascriptExecutor js = ((JavascriptExecutor) driver);
-//		js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-		 
-//
-//		JavascriptExecutor js = (JavascriptExecutor) driver;
-//		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-//		
-//		((JavascriptExecutor) driver).executeScript("scroll(0,0)");
-//		
-
 		
-//		driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
-		
-//		new Actions(driver).sendKeys(driver.findElement(By.tagName("html")), Keys.CONTROL).sendKeys(driver.findElement(By.tagName("html")),Keys.NUMPAD2).build().perform();
-		
-//		String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
-//	    WebElement e = driver.findElement(By
-//	            .xpath("//*[@id=\"conteudo-gerenciar-boleta\"]/div[1]/ul/li[2]/a/uib-tab-heading"));
-//	e.sendKeys(selectLinkOpeninNewTab);//to open the link in a current page in to the browsers new tab
-//
-//	    e.sendKeys(Keys.CONTROL + "\t");//to move focus to next tab in same browser
-
-//		WebElement eSupplierSuggest = driver.findElement(By.xpath("//*[@id=\"conteudo-gerenciar-boleta\"]/div[1]/ul/li[2]/a/uib-tab-heading"));
-//		Point location = eSupplierSuggest.getLocation();
-//		new Actions(driver).moveToElement(eSupplierSuggest, location.x, location.y).click();
-//		
-//		new Actions(driver).moveToElement(eSupplierSuggest).click().perform();
-//		
-//		JavascriptExecutor js = ((JavascriptExecutor) driver);
-//		
-//		//js.executeScript(arg0, arg1)
-		
-//		criaDetalhamento.topo.sendKeys(Keys.HOME);
-		
-//		Actions builder = new Actions(driver);   
-//		builder.moveToElement(criaDetalhamento.topo, -100, -200).click().build().perform();
-		
-//		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.abaCondicoesComerciais));
-//		criaDetalhamento.abaCondicoesComerciais.click();	
-											   
-		driver.navigate().to(file.getValue("urlAbaCondicoesComerciais"));
+		((Locatable) criaDetalhamento.abaCondicoesComerciais).getCoordinates().inViewPort();
+		try {
+			criaDetalhamento.abaCondicoesComerciais.click();
+			checkPageIsReady();
+		} catch (Exception e) {
+			new Actions(driver).sendKeys(Keys.PAGE_UP).perform();
+			criaDetalhamento.abaCondicoesComerciais.click();
+		}
 		
 		checkPageIsReady();
 		
 	}	
 	
-	public static void preencheAbaCondicoesComerciais(CriaDetalhamentoBoletaPageObject criaDetalhamento) {
+	public static void preencheAbaCondicoesComerciais(CriaDetalhamentoBoletaPageObject criaDetalhamento) throws InterruptedException {
 		
-		criaDetalhamento.selectProduto.sendKeys("TRICARD MAIS ADQUIRENCIA (ACEITAÇÃO)");
+		Select select = new Select(criaDetalhamento.selectProduto);
+		select.selectByVisibleText("TRICARD MAIS ADQUIRENCIA (ACEITAÇÃO)");
+				
+		checkPageIsReady();
+		
 		criaDetalhamento.btnAddProduto.click();
 		
-		criaDetalhamento.abaEquipamentos.click();		
+		checkPageIsReady();
+		
+		((Locatable) criaDetalhamento.abaEquipamentos).getCoordinates().inViewPort();
+		try {
+			criaDetalhamento.abaEquipamentos.click();
+		} catch (Exception e) {
+			new Actions(driver).sendKeys(Keys.PAGE_UP).perform();
+			criaDetalhamento.abaEquipamentos.click();
+		}
+
+		checkPageIsReady();
 
 	}
 
-	public static void preencheAbaEquipamentos(CriaDetalhamentoBoletaPageObject criaDetalhamento) {
+	public static void preencheAbaEquipamentos(CriaDetalhamentoBoletaPageObject criaDetalhamento) throws InterruptedException {
 		
-		criaDetalhamento.selectMeioConexao.sendKeys("DIAL");
-		criaDetalhamento.selectTipoLinha.sendKeys("Direta");
-		criaDetalhamento.selectModelo.sendKeys("POS com fio");
+		checkPageIsReady();
+		
+		Select select = new Select(criaDetalhamento.selectMeioConexao);
+		select.selectByVisibleText("DIAL");
+
+		Select selectTL = new Select(criaDetalhamento.selectTipoLinha);
+		selectTL.selectByVisibleText("Direta");
+
+		Select selectModelo = new Select(criaDetalhamento.selectModelo);
+		selectModelo.selectByVisibleText("POS com fio");
+	
 		criaDetalhamento.inputQtd.sendKeys("1");
 		
 		criaDetalhamento.btnAddEquipamento.click();
 		
+		checkPageIsReady();
+		
 		criaDetalhamento.btnSalvarEquipamento.click();
+		
+		checkPageIsReady();
 
 	}
 	
@@ -283,7 +277,7 @@ public class TesteCriaBoletaSGAD {
 		// Initially bellow given if condition will check ready state of page.
 		if (js.executeScript("return document.readyState").toString().equals("complete")) {
 			Thread.sleep(2000);
-			System.out.println("Page Is loaded.");
+			System.out.println("Página carregada");
 			return;
 		}
 
@@ -300,21 +294,8 @@ public class TesteCriaBoletaSGAD {
 				break;
 			}
 		}
-		
-		
-//		WebDriverWait wait = new WebDriverWait(driver, 30);
-//
-//		wait.until(new ExpectedCondition<Boolean>() {
-//			public Boolean apply(WebDriver wdriver) {
-//				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-//			}
-//		});
-	}
-	
-	
-	
-	
 
+	}
 
 }
 
