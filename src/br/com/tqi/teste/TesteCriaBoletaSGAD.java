@@ -3,8 +3,6 @@ package br.com.tqi.teste;
 import java.awt.AWTException;
 import java.io.IOException;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,6 +19,7 @@ import br.com.tqi.pages.CriaDetalhamentoBoletaPageObject;
 import br.com.tqi.pages.HomePageObject;
 import br.com.tqi.pages.LoginPageObjetct;
 import br.com.tqi.utils.FileUtils;
+import br.com.tqi.utils.JSWaiter;
 
 
 public class TesteCriaBoletaSGAD {
@@ -31,11 +30,13 @@ public class TesteCriaBoletaSGAD {
 	
 	static WebDriverWait wait;
 	
-	public static void main(String[] args) throws IOException {
+	static JSWaiter jSWaiter;
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
 		
 		try {
 								
-			file = new FileUtils(args[0]); 			
+			file = new FileUtils(args[0]); 	
 			
 			//Executar com Firefox
 			//System.setProperty("webdriver.firefox.bin", "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
@@ -50,17 +51,17 @@ public class TesteCriaBoletaSGAD {
 			driver = new ChromeDriver(options);
 
 			driver.navigate().to(file.getValue("url"));
-	
-			//Cria a Página de login
-			LoginPageObjetct login = new LoginPageObjetct(driver);
 			
-			checkPageIsReady();
+			JSWaiter.setDriver(driver);
+
+			LoginPageObjetct login = new LoginPageObjetct(driver);
+	
+			JSWaiter.waitJQueryAngular();
 			
 			login.txtUserName.sendKeys(file.getValue("user"));
 			
 			login.txtSenha.sendKeys(file.getValue("pwd"));
-			
-			//simula o enter
+
 			login.txtSenha.sendKeys(Keys.ENTER);
 		
 			HomePageObject home = new HomePageObject(driver);
@@ -69,41 +70,31 @@ public class TesteCriaBoletaSGAD {
 			
 			wait.until(ExpectedConditions.elementToBeClickable(home.menuBoletas));
 			
-			checkPageIsReady();
-			
+			JSWaiter.waitJQueryAngular();
+
 			home.menuBoletas.click();
 
 			AcoesBoletaPageObject boleta = new AcoesBoletaPageObject(driver);
 			
-			wait.until(ExpectedConditions.elementToBeClickable(boleta.btnNovaBoleta));
-			
-			checkPageIsReady();
-			
-			boleta.btnNovaBoleta.click();
+			wait.until(ExpectedConditions.elementToBeClickable(boleta.btnNovaBoleta)).click();
 			
 			CriaBoletaPageObject criaBoleta = new CriaBoletaPageObject(driver);
+
+			JSWaiter.waitJQueryAngular();
 			
-			checkPageIsReady();
+			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.inputCNPJ)).sendKeys(file.getValue("cnpj"));
+
+			JSWaiter.waitJQueryAngular();
 			
-			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.inputCNPJ));
-		
-			criaBoleta.inputCNPJ.sendKeys(file.getValue("cnpj"));
-			
-			checkPageIsReady();
-			
-			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.btnPesquisar));
-			
-			criaBoleta.btnPesquisar.click();
+			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.btnPesquisar)).click();
 			
 			wait.until(ExpectedConditions.elementToBeClickable(criaBoleta.btnNão)).click();
-			
-			checkPageIsReady();
+
+			JSWaiter.waitJQueryAngular();
 			
 			CriaDetalhamentoBoletaPageObject criaDetalhamento = new CriaDetalhamentoBoletaPageObject(driver);
-			
-			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
-			
-			checkPageIsReady();
+
+			JSWaiter.waitJQueryAngular();
 			
 			preencheAbaDadosEstabelecimento(criaDetalhamento, file);
 			
@@ -113,125 +104,109 @@ public class TesteCriaBoletaSGAD {
 			
 			Actions actionAcoesBoleta = new Actions(driver);
 			actionAcoesBoleta.moveToElement(criaDetalhamento.btnAcoesBoleta).build().perform();
-						
-			criaDetalhamento.btnEnviarBoleta.click();
 			
+			Thread.sleep(1000);
+						
+			criaDetalhamento.btnEnviarBoleta.click();			
 
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 
-		} 
+		} finally {
+			
+			JSWaiter.waitJQueryAngular();
+			
+			Thread.sleep(5000);
+			
+			driver.quit();
+
+		}
 	}
 	
 	public static void preencheAbaDadosEstabelecimento(CriaDetalhamentoBoletaPageObject criaDetalhamento, FileUtils file) throws IOException, InterruptedException, AWTException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputRazaoSocial));		
-		criaDetalhamento.inputRazaoSocial.sendKeys("Teste Automação - Rodrigo");	
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputRazaoSocial)).sendKeys("Teste Automação - Rodrigo");		
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputNomeFantasia));			
-		criaDetalhamento.inputNomeFantasia.sendKeys("Teste Automação - Rodrigo");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputNomeFantasia)).sendKeys("Teste Automação - Rodrigo");			
+
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCNAE)).sendKeys("4711302 - comércio varejista de mercadorias em geral, com predominƒncia de produtos alimentícios  supermercados");	
+
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputDataFundacao)).sendKeys("27/09/2017");	
+			
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputTelComercial)).sendKeys("3432224455");	
+
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCelComercial)).sendKeys("34992211444");	
+
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputEmailComercial)).sendKeys("teste@teste.de");	
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCNAE));	
-		criaDetalhamento.inputCNAE.sendKeys("4711302 - comércio varejista de mercadorias em geral, com predominƒncia de produtos alimentícios  supermercados");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputContatoComercial)).sendKeys("Rodrigo Magalhães");	
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputDataFundacao));	
-		criaDetalhamento.inputDataFundacao.sendKeys("27/09/2017");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputEmailSenha)).sendKeys("teste@teste.fr");	
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputTelComercial));	
-		criaDetalhamento.inputTelComercial.sendKeys("3432224455");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCelSenha)).sendKeys("99999222222");	
+			
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.selectTipoEndereco)).sendKeys("Comercial");	
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCelComercial));	
-		criaDetalhamento.inputCelComercial.sendKeys("34992211444");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputEmailComercial));	
-		criaDetalhamento.inputEmailComercial.sendKeys("teste@teste.de");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputContatoComercial));	
-		criaDetalhamento.inputContatoComercial.sendKeys("Rodrigo Magalhães");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputEmailSenha));	
-		criaDetalhamento.inputEmailSenha.sendKeys("teste@teste.fr");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCelSenha));	
-		criaDetalhamento.inputCelSenha.sendKeys("99999222222");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.selectTipoEndereco));	
-		criaDetalhamento.selectTipoEndereco.sendKeys("Comercial");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCEP));	
-		criaDetalhamento.inputCEP.sendKeys("38408220");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCEP)).sendKeys("38408220");	
 		
 		criaDetalhamento.inputCEP.sendKeys(Keys.TAB);
+				
+		JSWaiter.waitJQueryAngular();
 		
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarEnd)).click();			
+				
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputNome)).sendKeys("Rodrigo Ribeiro");
 		
-		checkPageIsReady();
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF)).sendKeys(file.getValue("cpf"));
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarEnd));			
-		criaDetalhamento.btnAdicionarEnd.click();
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputPart)).sendKeys("100,00");
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputNome));
-		criaDetalhamento.inputNome.sendKeys("Rodrigo Ribeiro");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputDataNascimento)).sendKeys("11/11/1945");
 		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
-		criaDetalhamento.inputCPF.sendKeys(file.getValue("cpf"));
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF));
-		criaDetalhamento.inputPart.sendKeys("100");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputDataNascimento));
-		criaDetalhamento.inputDataNascimento.sendKeys("11/11/1945");		
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarAcionista));
-		criaDetalhamento.btnAdicionarAcionista.click();
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputFaturamento));
-		criaDetalhamento.inputFaturamento.sendKeys("999999999,88");
-		
-		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputQtdChkLoja));
-		criaDetalhamento.inputQtdChkLoja.sendKeys("3");
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarAcionista)).click();
 
-		checkPageIsReady();
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputFaturamento)).sendKeys("999999999,88");
+		
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputQtdChkLoja)).sendKeys("3");
+
+		JSWaiter.waitJQueryAngular();
 
 		criaDetalhamento.chkContaDigital.click();
 
-		checkPageIsReady();
+		JSWaiter.waitJQueryAngular();
 		
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
-
 		criaDetalhamento.label.click();
 		criaDetalhamento.chkContaAbertura.click();
+	
+		JSWaiter.waitJQueryAngular();
 		
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("body > div.block-ui-container.ng-scope > div.block-ui-message-container > div.block-ui-message.ng-binding")));
-		
-		checkPageIsReady();
-		
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		
 		((Locatable) criaDetalhamento.abaCondicoesComerciais).getCoordinates().inViewPort();
 		try {
 			criaDetalhamento.abaCondicoesComerciais.click();
-			checkPageIsReady();
+			JSWaiter.waitJQueryAngular();
 		} catch (Exception e) {
 			new Actions(driver).sendKeys(Keys.PAGE_UP).perform();
+			JSWaiter.waitJQueryAngular();
 			criaDetalhamento.abaCondicoesComerciais.click();
-		}
+		}	
 		
-		checkPageIsReady();
+		JSWaiter.waitJQueryAngular();
 		
 	}	
 	
 	public static void preencheAbaCondicoesComerciais(CriaDetalhamentoBoletaPageObject criaDetalhamento) throws InterruptedException {
 		
 		Select select = new Select(criaDetalhamento.selectProduto);
-		select.selectByVisibleText("TRICARD MAIS ADQUIRENCIA (ACEITAÇÃO)");
-				
-		checkPageIsReady();
+		select.selectByVisibleText("TRICARD MAIS ADQUIRENCIA (ACEITAÇÃO)");			
 		
-		criaDetalhamento.btnAddProduto.click();
+		JSWaiter.waitJQueryAngular();
 		
-		checkPageIsReady();
+		criaDetalhamento.btnAddProduto.click();	
+		
+		JSWaiter.waitJQueryAngular();
 		
 		((Locatable) criaDetalhamento.abaEquipamentos).getCoordinates().inViewPort();
 		try {
@@ -239,15 +214,15 @@ public class TesteCriaBoletaSGAD {
 		} catch (Exception e) {
 			new Actions(driver).sendKeys(Keys.PAGE_UP).perform();
 			criaDetalhamento.abaEquipamentos.click();
-		}
-
-		checkPageIsReady();
+		}	
+		
+		JSWaiter.waitJQueryAngular();
 
 	}
 
-	public static void preencheAbaEquipamentos(CriaDetalhamentoBoletaPageObject criaDetalhamento) throws InterruptedException {
+	public static void preencheAbaEquipamentos(CriaDetalhamentoBoletaPageObject criaDetalhamento) throws InterruptedException {		
 		
-		checkPageIsReady();
+		JSWaiter.waitJQueryAngular();
 		
 		Select select = new Select(criaDetalhamento.selectMeioConexao);
 		select.selectByVisibleText("DIAL");
@@ -260,46 +235,15 @@ public class TesteCriaBoletaSGAD {
 	
 		criaDetalhamento.inputQtd.sendKeys("1");
 		
-		criaDetalhamento.btnAddEquipamento.click();
+		criaDetalhamento.btnAddEquipamento.click();	
 		
-		checkPageIsReady();
+		JSWaiter.waitJQueryAngular();
 		
-		criaDetalhamento.btnSalvarEquipamento.click();
+		criaDetalhamento.btnSalvarEquipamento.click();	
 		
-		checkPageIsReady();
+		JSWaiter.waitJQueryAngular();
 
-	}
-	
-	
-	public static void checkPageIsReady() throws InterruptedException {
-
-		Thread.sleep(2000);
-		
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-
-		// Initially bellow given if condition will check ready state of page.
-		if (js.executeScript("return document.readyState").toString().equals("complete")) {
-			Thread.sleep(2000);
-			System.out.println("Página carregada");
-			return;
-		}
-
-		// This loop will rotate for 25 times to check If page Is ready after every 1 second.
-		// You can replace your value with 25 If you wants to Increase or decrease wait time.
-		for (int i = 0; i < 50; i++) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			// To check page ready state.
-			if (js.executeScript("return document.readyState").toString().equals("complete")) {
-				Thread.sleep(2000);
-				System.out.println("Carregando Página");
-				break;
-			}
-		}
-
-	}
+	}	
 
 }
 

@@ -91,7 +91,7 @@ public class CriaDetalhamentoBoletaPageObject {
 	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div.ng-scope > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div.panel-body > div:nth-child(1) > div:nth-child(1) > div > label")
 	public WebElement label;
 	
-	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(2)")
+	@FindBy(css="#conteudo-gerenciar-boleta > div.ng-isolate-scope > ul > li:nth-child(2) > a > uib-tab-heading")
 	public WebElement abaCondicoesComerciais;
 	
 	//----------------------------------------------------------/Aba Condições Comerciais/---------------------------------------------//
