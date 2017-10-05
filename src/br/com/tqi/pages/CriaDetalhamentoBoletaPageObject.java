@@ -71,6 +71,8 @@ public class CriaDetalhamentoBoletaPageObject {
 
 	@FindBy(name = "dtNascimento")
 	public WebElement inputDataNascimento;
+	
+	public String msgAlert = "body > div.alertify-notifier.ajs-bottom.ajs-right > div";	
 
 	@FindBy(css = "#conteudo-gerenciar-boleta > div.ng-scope > div > ng-form > div.ng-scope > div.panel.panel-default > div.panel-body > ng-form > div > div:nth-child(6) > div > button.btn.table-btn.btn-success.btn-grid-fix")
 	public WebElement btnAdicionarAcionista;

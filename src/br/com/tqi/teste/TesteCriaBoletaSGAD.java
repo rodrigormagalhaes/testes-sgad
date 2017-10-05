@@ -2,9 +2,12 @@ package br.com.tqi.teste;
 
 import java.awt.AWTException;
 import java.io.IOException;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -106,7 +109,6 @@ public class TesteCriaBoletaSGAD {
 			preencheAbaCondicoesComerciais(criaDetalhamento);
 
 			preencheAbaEquipamentos(criaDetalhamento);
-
 			
 			// Simula movimento de passar o mouse sobre o menu da boleta - mouseover
 			Actions actionAcoesBoleta = new Actions(driver);
@@ -164,7 +166,10 @@ public class TesteCriaBoletaSGAD {
 		JSWaiter.waitJQueryAngular();
 
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarEnd)).click();
-
+		
+		// Aguarda alert desaparecer
+	    wait.until((ExpectedConditions.invisibilityOfElementLocated((By.cssSelector(criaDetalhamento.msgAlert)))));
+	
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputNome)).sendKeys("Rodrigo Ribeiro");
 
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputCPF)).sendKeys(file.getValue("cpf"));
@@ -172,9 +177,12 @@ public class TesteCriaBoletaSGAD {
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputPart)).sendKeys("100,00");
 
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputDataNascimento)).sendKeys("11/11/1945");
-
+		
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAdicionarAcionista)).click();
 
+		// Aguarda alert desaparecer
+		wait.until((ExpectedConditions.invisibilityOfElementLocated((By.cssSelector(criaDetalhamento.msgAlert)))));
+						
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputFaturamento)).sendKeys("999999999,88");
 
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.inputQtdChkLoja)).sendKeys("3");
@@ -215,6 +223,9 @@ public class TesteCriaBoletaSGAD {
 
 		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAddProduto)).click();
 		
+		// Aguarda alert desaparecer
+		wait.until((ExpectedConditions.invisibilityOfElementLocated((By.cssSelector(criaDetalhamento.msgAlert)))));
+		
 		JSWaiter.waitJQueryAngular();
 
 		// localiza a posição do elemento, tornando o elemento visível
@@ -248,7 +259,10 @@ public class TesteCriaBoletaSGAD {
 		criaDetalhamento.inputQtd.sendKeys("1");
 
 		criaDetalhamento.btnAddEquipamento.click();
-
+		
+		// Aguarda alert desaparecer
+		wait.until((ExpectedConditions.invisibilityOfElementLocated((By.cssSelector(criaDetalhamento.msgAlert)))));
+		
 		JSWaiter.waitJQueryAngular();
 
 		criaDetalhamento.btnSalvarEquipamento.click();
