@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.internal.Locatable;
+import org.openqa.selenium.interactions.internal.Locatable;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -108,7 +108,7 @@ public class TesteCriaBoletaSGAD {
 			preencheAbaEquipamentos(criaDetalhamento);
 
 			
-			// Simula movimento de passar o mouse sobre o menu da boleta - mouseouver
+			// Simula movimento de passar o mouse sobre o menu da boleta - mouseover
 			Actions actionAcoesBoleta = new Actions(driver);
 			actionAcoesBoleta.moveToElement(criaDetalhamento.btnAcoesBoleta).build().perform();
 
@@ -185,12 +185,9 @@ public class TesteCriaBoletaSGAD {
 
 		JSWaiter.waitJQueryAngular();
 
-		//criaDetalhamento.label.click();
 		criaDetalhamento.chkContaAbertura.click();
 
 		JSWaiter.waitJQueryAngular();
-
-		//Thread.sleep(2000);
 
 		// localiza a posição do elemento, tornando o elemento visível
 		((Locatable) criaDetalhamento.abaCondicoesComerciais).getCoordinates().inViewPort();
@@ -216,8 +213,8 @@ public class TesteCriaBoletaSGAD {
 
 		JSWaiter.waitJQueryAngular();
 
-		criaDetalhamento.btnAddProduto.click();
-
+		wait.until(ExpectedConditions.elementToBeClickable(criaDetalhamento.btnAddProduto)).click();
+		
 		JSWaiter.waitJQueryAngular();
 
 		// localiza a posição do elemento, tornando o elemento visível
