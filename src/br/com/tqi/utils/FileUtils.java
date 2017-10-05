@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;	
 
+/**
+ * Controla a leitura e get values do arquivo de propriedades
+ *
+ */
 public class FileUtils {
 
 	private static Properties props;

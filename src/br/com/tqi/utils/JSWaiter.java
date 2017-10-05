@@ -5,6 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Responsável por validar término de carregamento de páginas usando JS, JQuery ou Angular
+ *
+ */
 public class JSWaiter {
 
 	private static WebDriver jsWaitDriver;
@@ -19,14 +23,14 @@ public class JSWaiter {
 
 	// Aguarda carregamento JQuery
 	public static void waitForJQueryLoad() {
-		// Aguarda carregamento JQuery
+		// Verifica se já carregou
 		ExpectedCondition<Boolean> jQueryLoad = driver -> ((Long) ((JavascriptExecutor) jsWaitDriver)
 				.executeScript("return jQuery.active") == 0);
 
 		// Verifica se já carregou
 		boolean jqueryReady = (Boolean) jsExec.executeScript("return jQuery.active==0");
 
-		// Aguarda até JQuery terminar processamento
+		// Verifica se já carregou
 		if (!jqueryReady) {
 			System.out.println("JQuery NÃO terminou!");
 			// Aguarda até JQuery terminar processamento
@@ -38,19 +42,22 @@ public class JSWaiter {
 
 	// Aguarda carregamento do Angular
 	public static void waitForAngularLoad() {
+		
+		//timeout de 1 min
 		WebDriverWait wait = new WebDriverWait(jsWaitDriver, 60);
+		
 		JavascriptExecutor jsExec = (JavascriptExecutor) jsWaitDriver;
 
 		String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
 
-		// Aguarda carregamento do Angular
+		// Verifica se já carregou
 		ExpectedCondition<Boolean> angularLoad = driver -> Boolean
 				.valueOf(((JavascriptExecutor) driver).executeScript(angularReadyScript).toString());
 
-		// Verifica se Angulgar terminou
+		// Verifica se já carregou
 		boolean angularReady = Boolean.valueOf(jsExec.executeScript(angularReadyScript).toString());
 
-		// Aguarda carregamento do Angular
+		// Verifica se já carregou
 		if (!angularReady) {
 			System.out.println("ANGULAR NÃO terminou!");
 			// Aguarda carregamento do Angular
@@ -62,17 +69,20 @@ public class JSWaiter {
 
 	// Aguarda JS terminar carregamento
 	public static void waitUntilJSReady() {
+		
+		//timeout de 1 min
 		WebDriverWait wait = new WebDriverWait(jsWaitDriver, 60);
+		
 		JavascriptExecutor jsExec = (JavascriptExecutor) jsWaitDriver;
 
-		// Aguarda JS terminar carregamento
+		// Verifica se já carregou
 		ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) jsWaitDriver)
 				.executeScript("return document.readyState").toString().equals("complete");
 
 		// Verifica se já carregou
 		boolean jsReady = (Boolean) jsExec.executeScript("return document.readyState").toString().equals("complete");
 
-		// Aguarda JS terminar carregamento
+		// Verifica se já carregou
 		if (!jsReady) {
 			System.out.println("JS NÃO terminou!");
 			// Aguarda JS terminar carregamento
@@ -86,7 +96,7 @@ public class JSWaiter {
 	public static void waitUntilJQueryReady() {
 		JavascriptExecutor jsExec = (JavascriptExecutor) jsWaitDriver;
 
-		// First check that JQuery is defined on the page. If it is, then wait AJAX
+		// Verifica se JQuery está definido na página
 		Boolean jQueryDefined = (Boolean) jsExec.executeScript("return typeof jQuery != 'undefined'");
 		if (jQueryDefined == true) {
 
@@ -100,7 +110,7 @@ public class JSWaiter {
 
 			sleep(20);
 		} else {
-			System.out.println("jQuery is not defined on this site!");
+			System.out.println("jQuery não está definido na página!");
 		}
 	}
 
@@ -108,7 +118,7 @@ public class JSWaiter {
 	public static void waitUntilAngularReady() {
 		JavascriptExecutor jsExec = (JavascriptExecutor) jsWaitDriver;
 
-		// First check that ANGULAR is defined on the page. If it is, then wait ANGULAR
+		// Verifica se Angular é usado na página, se sim aguarda Angular carregar
 		Boolean angularUnDefined = (Boolean) jsExec.executeScript("return window.angular === undefined");
 		if (!angularUnDefined) {
 			Boolean angularInjectorUnDefined = (Boolean) jsExec
@@ -125,10 +135,10 @@ public class JSWaiter {
 
 				sleep(20);
 			} else {
-				System.out.println("Angular injector is not defined on this site!");
+				System.out.println("Angular injector não está definido na página");
 			}
 		} else {
-			System.out.println("Angular is not defined on this site!");
+			System.out.println("Angular não está definido na página");
 		}
 	}
 
